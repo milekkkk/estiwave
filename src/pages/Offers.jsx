@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import DashboardLayout, { Icon } from "../components/DashboardLayout";
 import "./Offers.css";
+import { useState } from "react";
 
 // Same static examples as Dashboard.jsx. TODO: Supply your offer data here.
 const offers = [
@@ -55,6 +56,13 @@ const offers = [
 ];
 
 export default function Offers() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const search = searchQuery.toLowerCase();
+
+  const filteredOffers = offers.filter((query) =>
+    query.title.toLowerCase().includes(search),
+  );
+
   return (
     <DashboardLayout>
       <div className="offers-page">
@@ -87,13 +95,14 @@ export default function Offers() {
             <div className="section-heading">
               <div>
                 <h2 id="offers-list-title">
-                  Your offers <span className="count-badge">4</span>
+                  Your offers{" "}
+                  <span className="count-badge">{filteredOffers.length}</span>
                 </h2>
                 <p>A clear view of your latest proposals and their progress.</p>
               </div>
             </div>
             <div className="offers-controls">
-              {/* TODO: Connect search to React state and implement searching. */}
+              {/* added basic search */}
               <div className="offers-search">
                 <label htmlFor="offers-search">Search offers</label>
                 <div className="offers-search-field">
@@ -112,8 +121,9 @@ export default function Offers() {
                   <input
                     id="offers-search"
                     type="search"
+                    value={searchQuery}
                     placeholder="Search by offer, client or number"
-                    disabled
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     aria-describedby="offers-preview-note"
                   />
                 </div>
@@ -188,9 +198,9 @@ export default function Offers() {
               </p>
             </div>
             {/* TODO: Show OffersEmptyState when your offer list is empty. */}
-            <OffersTable offers={offers} />
+            <OffersTable offers={filteredOffers} />
             <div className="table-footer">
-              <span>Showing 4 sample offers</span>
+              <span>Showing {filteredOffers.length} sample offers</span>
               <span>All amounts in PLN</span>
             </div>
           </section>
