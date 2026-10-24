@@ -1,0 +1,75 @@
+:root {
+  --accent: #206ee3;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.LoginPanel {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  justify-self: center;
+  padding: 48px;
+  row-gap: 20px;
+  max-width: 300px;
+}
+
+.Logo {
+  height: 64px;
+  width: auto;
+}
+
+.simple {
+  text-decoration: none;
+  font-weight: 200;
+  letter-spacing: 0.5px;
+  line-height: 110%;
+}
+
+.loginform {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.loginform input {
+  font-size: 16px;
+  padding: 12px;
+  padding-bottom: 16px;
+}
+
+.loginform button {
+  margin-top: 20px;
+  font-size: 18px;
+  color: white;
+  font-weight: 400;
+  background-color: darkblue;
+  border-radius: 4px;
+  padding: 12px 8px 12px 8px;
+  border: none;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.errormessage {
+  background-color: rgba(200, 0, 0, 0.4);
+  padding: 12px;
+  font-weight: 300;
+  font-size: 14px;
+}
