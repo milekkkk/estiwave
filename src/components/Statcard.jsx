@@ -7,6 +7,7 @@ function Statcard({
   currency = false,
   trend = "",
   period,
+  children,
 }) {
   return (
     <article className="metric-card">
@@ -21,20 +22,7 @@ function Statcard({
           <b>{trend}</b> {period}
         </span>
       )}
-      <div className="mini-bars" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
+      {children}
     </article>
   );
 }

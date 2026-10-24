@@ -6,8 +6,8 @@ import Statcard from "../components/Statcard.jsx";
 
 const stats = [
   {
-    id: "0",
-    title: "Tytul 1",
+    id: 0,
+    title: "Accepted offer value",
     value: 80000,
     currency: true,
     icon: "arrow",
@@ -15,13 +15,22 @@ const stats = [
     period: "vs. last month",
   },
   {
-    id: "1",
-    title: "Tytul 2",
-    value: 85000,
+    id: 1,
+    title: "Active offers",
+    value: 12,
     currency: false,
-    icon: "arrow",
-    trend: "10%",
-    period: "vs. last month",
+    icon: "file",
+    trend: "+3 new",
+    period: "this month",
+  },
+  {
+    id: 2,
+    title: "Your clients",
+    value: 28,
+    currency: false,
+    icon: "users",
+    trend: "+4 clients",
+    period: "this month",
   },
 ];
 
@@ -111,35 +120,33 @@ export default function Dashboard() {
               icon={stat.icon}
               trend={stat.trend}
               period={stat.period}
-            />
+            >
+              {stat.id === 1 && (
+                <div className="metric-footer">
+                  <span className="status-dot blue" />
+                  <p>5 awaiting a response</p>
+                </div>
+              )}
+              {stat.id === 0 && (
+                <div className="mini-bars" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              )}
+
+              {stat.id === 2 && (
+                <div className="metric-footer avatar-stack">
+                  <span>NS</span>
+                  <span>AC</span>
+                  <span>FM</span>
+                  <small>Build lasting relationships.</small>
+                </div>
+              )}
+            </Statcard>
           ))}
-          <article className="metric-card">
-            <span className="metric-label">
-              Active offers <Icon name="file" />
-            </span>
-            <strong>12</strong>
-            <span className="metric-note">
-              <b>+3 new</b> this month
-            </span>
-            <div className="metric-footer">
-              <span className="status-dot blue" /> 5 awaiting a response
-            </div>
-          </article>
-          <article className="metric-card">
-            <span className="metric-label">
-              Your clients <Icon name="users" />
-            </span>
-            <strong>28</strong>
-            <span className="metric-note">
-              <b>+4 clients</b> this month
-            </span>
-            <div className="metric-footer avatar-stack">
-              <span>NS</span>
-              <span>AC</span>
-              <span>FM</span>
-              <small>Build lasting relationships.</small>
-            </div>
-          </article>
         </section>
         <section className="dashboard-middle">
           <article className="getting-started">
