@@ -57,11 +57,30 @@ const offers = [
 
 export default function Offers() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("all");
   const search = searchQuery.toLowerCase();
 
-  const filteredOffers = offers.filter((query) =>
-    query.title.toLowerCase().includes(search),
-  );
+  /*  another way of filtering search, but i use the other one which is easier to develop later
+  const filteredOffers = offers.filter(
+    (query) =>
+      (category === "All" || query.status === category) &&
+      (query.title.toLowerCase().includes(search) ||
+        query.client.toLowerCase().includes(search) ||
+        query.number.toLowerCase().includes(search)),
+  ); */
+
+  const filteredOffers = offers.filter((query) => {
+    const categoryMatch =
+      category.toLowerCase() === "all" ||
+      query.status.toLowerCase() === category.toLowerCase();
+
+    const searchMatch =
+      query.title.toLowerCase().includes(search) ||
+      query.client.toLowerCase().includes(search) ||
+      query.number.toLowerCase().includes(search);
+
+    return categoryMatch && searchMatch;
+  });
 
   return (
     <DashboardLayout>
@@ -153,48 +172,75 @@ export default function Offers() {
               >
                 <button
                   type="button"
-                  className="offers-filter is-selected"
-                  aria-pressed="true"
-                  disabled
+                  className={
+                    category === "all"
+                      ? "offers-filter is-selected"
+                      : "offers-filter"
+                  }
+                  aria-pressed={category === "all"}
+                  onClick={() => setCategory("all")}
                 >
                   All <span>4</span>
                 </button>
                 <button
                   type="button"
-                  className="offers-filter"
-                  aria-pressed="false"
-                  disabled
+                  className={
+                    category === "draft"
+                      ? "offers-filter is-selected"
+                      : "offers-filter"
+                  }
+                  aria-pressed={category === "draft"}
+                  onClick={() => {
+                    setCategory("draft");
+                  }}
                 >
                   Draft <span>1</span>
                 </button>
                 <button
                   type="button"
-                  className="offers-filter"
-                  aria-pressed="false"
-                  disabled
+                  className={
+                    category === "sent"
+                      ? "offers-filter is-selected"
+                      : "offers-filter"
+                  }
+                  aria-pressed={category === "sent"}
+                  onClick={() => {
+                    setCategory("sent");
+                  }}
                 >
                   Sent <span>2</span>
                 </button>
                 <button
                   type="button"
-                  className="offers-filter"
-                  aria-pressed="false"
-                  disabled
+                  className={
+                    category === "accepted"
+                      ? "offers-filter is-selected"
+                      : "offers-filter"
+                  }
+                  aria-pressed={category === "accepted"}
+                  onClick={() => {
+                    setCategory("accepted");
+                  }}
                 >
                   Accepted <span>1</span>
                 </button>
                 <button
                   type="button"
-                  className="offers-filter"
-                  aria-pressed="false"
-                  disabled
+                  className={
+                    category === "rejected"
+                      ? "offers-filter is-selected"
+                      : "offers-filter"
+                  }
+                  aria-pressed={category === "rejected"}
+                  onClick={() => {
+                    setCategory("rejected");
+                  }}
                 >
                   Rejected <span>0</span>
                 </button>
               </div>
               <p id="offers-preview-note">
-                Preview only · search, filters and sorting are not connected
-                yet.
+                Search and filters are implemented, sorting is not yet
               </p>
             </div>
             {/* TODO: Show OffersEmptyState when your offer list is empty. */}
