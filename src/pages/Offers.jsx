@@ -58,16 +58,8 @@ const offers = [
 export default function Offers() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
   const search = searchQuery.toLowerCase();
-
-  /*  another way of filtering search, but i use the other one which is easier to develop later
-  const filteredOffers = offers.filter(
-    (query) =>
-      (category === "All" || query.status === category) &&
-      (query.title.toLowerCase().includes(search) ||
-        query.client.toLowerCase().includes(search) ||
-        query.number.toLowerCase().includes(search)),
-  ); */
 
   const filteredOffers = offers.filter((query) => {
     const categoryMatch =
@@ -81,6 +73,34 @@ export default function Offers() {
 
     return categoryMatch && searchMatch;
   });
+
+  const sortedOffers = [...filteredOffers];
+
+  function sortMatch(sortType) {
+    if (sortType === "newest") {
+      return sortedOffers.sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      });
+    } else if (sortType === "oldest") {
+      return sortedOffers.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+    } else if (sortType === "highest") {
+      return sortedOffers.sort((a, b) => {
+        return (
+          parseInt(b.value.replaceAll(",", ""), 10) -
+          parseInt(a.value.replaceAll(",", ""), 10)
+        );
+      });
+    } else if (sortType === "lowest") {
+      return sortedOffers.sort((a, b) => {
+        return (
+          parseInt(a.value.replaceAll(",", ""), 10) -
+          parseInt(b.value.replaceAll(",", ""), 10)
+        );
+      });
+    }
+  }
 
   return (
     <DashboardLayout>
@@ -147,18 +167,18 @@ export default function Offers() {
                   />
                 </div>
               </div>
-              {/* TODO: Enable this select and implement sorting in React. */}
               <div className="offers-sort">
                 <label htmlFor="offers-sort">Sort by</label>
                 <select
                   id="offers-sort"
-                  disabled
                   aria-describedby="offers-preview-note"
+                  onChange={(e) => setSortBy(e.target.value)}
+                  value={sortBy}
                 >
-                  <option>Newest first</option>
-                  <option>Oldest first</option>
-                  <option>Highest value</option>
-                  <option>Lowest value</option>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="highest">Highest value</option>
+                  <option value="lowest">Lowest value</option>
                 </select>
               </div>
             </div>
@@ -244,7 +264,7 @@ export default function Offers() {
               </p>
             </div>
             {filteredOffers.length >= 1 ? (
-              <OffersTable offers={filteredOffers} />
+              <OffersTable offers={sortMatch(sortBy)} />
             ) : (
               <div className="offers-no-results" role="status">
                 <span className="offers-no-results-icon" aria-hidden="true">
@@ -299,7 +319,6 @@ export default function Offers() {
   );
 }
 
-// Presentation only: no searching, filtering or sorting here.
 export function OffersTable({ offers }) {
   return (
     <table className="offers-table offers-all-table">
