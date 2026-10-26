@@ -243,8 +243,47 @@ export default function Offers() {
                 Search and filters are implemented, sorting is not yet
               </p>
             </div>
-            {/* TODO: Show OffersEmptyState when your offer list is empty. */}
-            <OffersTable offers={filteredOffers} />
+            {filteredOffers.length >= 1 ? (
+              <OffersTable offers={filteredOffers} />
+            ) : (
+              <div className="offers-no-results" role="status">
+                <span className="offers-no-results-icon" aria-hidden="true">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m7 8 3 1 M15 9l2-1" />
+                    <circle
+                      cx="9"
+                      cy="11"
+                      r="0.7"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <circle
+                      cx="15"
+                      cy="11"
+                      r="0.7"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <path d="M8.5 16c2-2.5 5-2.5 7 0" />
+                  </svg>
+                </span>
+                <h3>Uh-oh, no offers found</h3>
+                <p>
+                  Try a different search term or adjust your status filters.
+                </p>
+              </div>
+            )}
+
             <div className="table-footer">
               <span>Showing {filteredOffers.length} sample offers</span>
               <span>All amounts in PLN</span>
