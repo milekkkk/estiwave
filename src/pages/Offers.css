@@ -162,14 +162,21 @@
 .offers-details-label {
   display: none;
 }
-.offers-page input:focus-visible,
 .offers-page select:focus-visible,
 .offers-filter:focus-visible {
   outline: 3px solid #9fc4fa;
   outline-offset: 3px;
 }
+.offers-search-field:hover {
+  border-color: #b7c3d4;
+}
 .offers-search-field:focus-within {
   border-color: var(--brand);
+  outline: 3px solid #206ee31a;
+  outline-offset: 1px;
+}
+.offers-page .offers-search input:focus-visible {
+  outline: none;
 }
 .offers-empty {
   padding: 64px 24px;

@@ -2,6 +2,7 @@ import "./App.css";
 import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Offers from "./pages/Offers.jsx";
+import NewOffer from "./pages/NewOffer.jsx";
 import { Navigate, Routes, Route } from "react-router";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/offers" element={<Offers />} />
+        <Route path="/offers/new" element={<NewOffer />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </>
