@@ -4,10 +4,59 @@ import "./NewOffer.css";
 import { useState } from "react";
 
 export default function NewOffer() {
+  const [error, setError] = useState({
+    title: "",
+    client: "",
+    value: "",
+    description: "",
+  });
   const [title, setTitle] = useState("");
   const [client, setClient] = useState("");
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const nextErrors = {
+      title: "",
+      client: "",
+      value: "",
+      description: "",
+    };
+
+    if (title.trim() === "") {
+      nextErrors.title = "Offer title cannot be empty";
+    }
+    if (client.trim() === "") {
+      nextErrors.client = "Client name cannot be empty";
+    }
+    if (value.trim() === "") {
+      nextErrors.value = "Offer value cannot be empty";
+    } else if (Number(value) <= 0) {
+      nextErrors.value = "Offer value must be greater than 0";
+    }
+    if (description.trim() === "") {
+      nextErrors.description = "Offer description cannot be empty";
+    }
+    setError(nextErrors);
+    if (
+      nextErrors.title === "" &&
+      nextErrors.client === "" &&
+      nextErrors.value === "" &&
+      nextErrors.description === ""
+    ) {
+      const newOffer = {
+        title: title.trim(),
+        client: client.trim(),
+        value: Number(value),
+        description: description.trim(),
+        date: Date.now(),
+        status: "draft",
+      };
+      console.log(newOffer);
+    }
+  }
 
   return (
     <DashboardLayout>
@@ -46,6 +95,7 @@ export default function NewOffer() {
             className="new-offer-form"
             aria-labelledby="new-offer-info-title"
             noValidate
+            onSubmit={handleSubmit}
           >
             <div className="new-offer-section-heading">
               <span className="feature-icon">
@@ -60,15 +110,45 @@ export default function NewOffer() {
               {/* TODO: Add validation and field error messages when implementing form logic. */}
               <div className="new-offer-field new-offer-full-width">
                 <label htmlFor="new-offer-title">Offer title</label>
-                <input
-                  id="new-offer-title"
-                  name="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  type="text"
-                  placeholder="e.g. Brand identity for Nova Studio"
-                  aria-describedby="new-offer-title-hint"
-                />
+                <div
+                  className={`new-offer-control${error.title ? " has-error" : ""}`}
+                >
+                  <input
+                    id="new-offer-title"
+                    name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    type="text"
+                    placeholder="e.g. Brand identity for Nova Studio"
+                    aria-describedby={
+                      error.title
+                        ? "new-offer-title-hint new-offer-title-error"
+                        : "new-offer-title-hint"
+                    }
+                    aria-invalid={Boolean(error.title)}
+                  />
+                  {error.title && (
+                    <span
+                      className="new-offer-error"
+                      id="new-offer-title-error"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v6 M12 17h.01" />
+                      </svg>
+                      <span>{error.title}</span>
+                    </span>
+                  )}
+                </div>
 
                 <p id="new-offer-title-hint">
                   Choose a short, descriptive name for this offer.
@@ -76,43 +156,132 @@ export default function NewOffer() {
               </div>
               <div className="new-offer-field">
                 <label htmlFor="new-offer-client">Client name</label>
-                <input
-                  id="new-offer-client"
-                  value={client}
-                  name="client"
-                  onChange={(e) => setClient(e.target.value)}
-                  type="text"
-                  placeholder="e.g. Nova Studio"
-                />
+                <div
+                  className={`new-offer-control${error.client ? " has-error" : ""}`}
+                >
+                  <input
+                    id="new-offer-client"
+                    value={client}
+                    name="client"
+                    onChange={(e) => setClient(e.target.value)}
+                    type="text"
+                    placeholder="e.g. Nova Studio"
+                    aria-describedby={
+                      error.client ? "new-offer-client-error" : undefined
+                    }
+                    aria-invalid={Boolean(error.client)}
+                  />
+                  {error.client && (
+                    <span
+                      className="new-offer-error"
+                      id="new-offer-client-error"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v6 M12 17h.01" />
+                      </svg>
+                      <span>{error.client}</span>
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="new-offer-field">
                 <label htmlFor="new-offer-value">Offer value (PLN)</label>
-                <div className="new-offer-value-input">
-                  <input
-                    value={value}
-                    id="new-offer-value"
-                    name="value"
-                    type="number"
-                    onChange={(e) => setValue(e.target.value)}
-                    inputMode="decimal"
-                    placeholder="0.00"
-                    aria-describedby="new-offer-currency"
-                  />
+                <div
+                  className={`new-offer-control${error.value ? " has-error" : ""}`}
+                >
+                  <div className="new-offer-value-input">
+                    <input
+                      value={value}
+                      id="new-offer-value"
+                      name="value"
+                      type="number"
+                      onChange={(e) => setValue(e.target.value)}
+                      inputMode="decimal"
+                      placeholder="0.00"
+                      aria-describedby={
+                        error.value
+                          ? "new-offer-currency new-offer-value-error"
+                          : "new-offer-currency"
+                      }
+                      aria-invalid={Boolean(error.value)}
+                    />
 
-                  <span id="new-offer-currency">PLN</span>
+                    <span id="new-offer-currency">PLN</span>
+                  </div>
+                  {error.value && (
+                    <span
+                      className="new-offer-error"
+                      id="new-offer-value-error"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v6 M12 17h.01" />
+                      </svg>
+                      <span>{error.value}</span>
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="new-offer-field new-offer-full-width">
                 <label htmlFor="new-offer-description">Description</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  id="new-offer-description"
-                  name="description"
-                  rows="6"
-                  placeholder="Outline the scope of work, deliverables, and any details your client should know."
-                  aria-describedby="new-offer-description-hint"
-                />
+                <div
+                  className={`new-offer-control${error.description ? " has-error" : ""}`}
+                >
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    id="new-offer-description"
+                    name="description"
+                    rows="6"
+                    placeholder="Outline the scope of work, deliverables, and any details your client should know."
+                    aria-describedby={
+                      error.description
+                        ? "new-offer-description-hint new-offer-description-error"
+                        : "new-offer-description-hint"
+                    }
+                    aria-invalid={Boolean(error.description)}
+                  />
+                  {error.description && (
+                    <span
+                      className="new-offer-error"
+                      id="new-offer-description-error"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v6 M12 17h.01" />
+                      </svg>
+                      <span>{error.description}</span>
+                    </span>
+                  )}
+                </div>
                 <p id="new-offer-description-hint">
                   A clear scope helps set the right expectations.
                 </p>
@@ -130,7 +299,6 @@ export default function NewOffer() {
                 <button
                   className="dashboard-button primary"
                   type="submit"
-                  disabled
                   aria-describedby="new-offer-save-note"
                 >
                   Save draft
@@ -138,6 +306,7 @@ export default function NewOffer() {
               </div>
             </div>
           </form>
+
           <footer className="dashboard-footer">
             <span>Small steps. Great offers. Endless possibilities.</span>
             <span>EstiWave</span>

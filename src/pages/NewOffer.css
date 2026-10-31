@@ -38,3 +38,75 @@
   .new-offer-page .dashboard-topbar { font-size: 11px; }
   .new-offer-page .breadcrumb-slash { margin-inline: 10px; }
 }
+
+/* Error tooltips overlay the form without reserving space. */
+.new-offer-control {
+  position: relative;
+  border: 1px solid #dfe2e8;
+  border-radius: 7px;
+  background: white;
+}
+.new-offer-control:hover { border-color: #b7c3d4; }
+.new-offer-control:focus-within {
+  border-color: var(--brand);
+  outline: 3px solid #206ee31a;
+  outline-offset: 1px;
+}
+.new-offer-control input,
+.new-offer-control textarea {
+  border: 0;
+  background: transparent;
+}
+.new-offer-control input:focus-visible,
+.new-offer-control textarea:focus-visible { outline: none; }
+.new-offer-control.has-error { border-color: #d75555; }
+.new-offer-control.has-error:focus-within {
+  border-color: #c33e3e;
+  outline-color: #d7555520;
+}
+.new-offer-error {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 2;
+  width: max-content;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid #f1caca;
+  border-radius: 7px;
+  box-shadow: 0 3px 10px #7130300d;
+  background: #fff7f7;
+  color: #b23838;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.new-offer-error svg { flex-shrink: 0; margin-top: 1px; }
+.new-offer-error > span { min-width: 0; }
+
+.new-offer-error::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 16px;
+  width: 8px;
+  height: 8px;
+  background: #fff7f7;
+  border-top: 1px solid #f1caca;
+  border-left: 1px solid #f1caca;
+  transform: rotate(45deg);
+}
+
+.new-offer-control.has-error:hover,
+.new-offer-control.has-error:focus-within {
+  z-index: 3;
+}
+.new-offer-control:hover .new-offer-error,
+.new-offer-control:focus-within .new-offer-error {
+  opacity: 1;
+}
